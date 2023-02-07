@@ -9,9 +9,9 @@ namespace EchKode.PBMods.DamagePopups
 {
 	static class Heartbeat
 	{
-		public static readonly List<Action<GameController>> Systems = new List<Action<GameController>>();
+		internal static readonly List<Action<GameController>> SystemInstalls = new List<Action<GameController>>();
 
-		public static void Start()
+		internal static void Start()
 		{
 			var fi = AccessTools.DeclaredField(typeof(PhantomBrigade.Heartbeat), "_gameController");
 			if (fi == null)
@@ -20,7 +20,7 @@ namespace EchKode.PBMods.DamagePopups
 			}
 
 			var gameController = (GameController)fi.GetValue(null);
-			Systems.ForEach(load => load(gameController));
+			SystemInstalls.ForEach(install => install(gameController));
 		}
 	}
 }

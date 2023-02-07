@@ -32,37 +32,107 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\0Harmony.dll</HintPath>
+      <HintPath>C:\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>C:\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\..\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>C:\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Entitas">
-      <HintPath>..\..\..\..\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\Entitas.dll</HintPath>
+      <HintPath>C:\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\Entitas.dll</HintPath>
+    </Reference>
+    <Reference Include="Entitas.CodeGeneration.Attributes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\Entitas.CodeGeneration.Attributes.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>C:\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>C:\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityUtilities">
-      <HintPath>..\..\..\..\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\UnityUtilities.dll</HintPath>
+      <HintPath>C:\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\UnityUtilities.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CIViewCombatPopups.cs" />
-    <Compile Include="CombatBootstrap.cs" />
-    <Compile Include="Heartbeat.cs" />
+    <Compile Include="Features\DamagePopupFeature.cs" />
+    <Compile Include="Generated\EkPopup\Components\EkPopupSlidePositionComponent.cs" />
+    <Compile Include="Generated\EkPopup\Components\EkPopupAnimationKeyComponent.cs" />
+    <Compile Include="Generated\EkRequest\Components\EkRequestAnimationKeyComponent.cs" />
+    <Compile Include="Generated\EkTracking\Components\EkTrackingAnimationKeyComponent.cs" />
+    <Compile Include="Generated\EkPopup\Components\EkPopupCombatUnitIDComponent.cs" />
+    <Compile Include="Generated\EkRequest\Components\EkRequestCombatUnitIDComponent.cs" />
+    <Compile Include="Generated\EkTracking\Components\EkTrackingCombatUnitIDComponent.cs" />
+    <Compile Include="Generated\EkTracking\Components\EkTrackingDamageTrackerComponent.cs" />
+    <Compile Include="Generated\EkTracking\Components\EkTrackingDirtyComponent.cs" />
+    <Compile Include="Generated\EkPopup\Components\EkPopupPopupComponent.cs" />
+    <Compile Include="Generated\EkRequest\Components\EkRequestDamageTextComponent.cs" />
+    <Compile Include="Generated\EkPopup\Components\EkPopupDisplayTextComponent.cs" />
+    <Compile Include="Generated\EkPopup\Components\EkPopupPositionComponent.cs" />
+    <Compile Include="Generated\EkPopup\Components\EkPopupSlideAnimationComponent.cs" />
+    <Compile Include="Generated\EkPopup\Components\EkPopupSlotComponent.cs" />
+    <Compile Include="Generated\EkPopup\Components\EkPopupSpriteDisposalComponent.cs" />
+    <Compile Include="Generated\Components\Interfaces\IAnimationKeyEntity.cs" />
+    <Compile Include="Generated\Components\Interfaces\ICombatUnitIDEntity.cs" />
+    <Compile Include="Generated\EkPopup\EkPopupComponentsLookup.cs" />
+    <Compile Include="Generated\EkRequest\EkRequestComponentsLookup.cs" />
+    <Compile Include="Generated\EkTracking\EkTrackingComponentsLookup.cs" />
+    <Compile Include="Generated\EkPopup\EkPopupAttribute.cs" />
+    <Compile Include="Generated\EkRequest\EkRequestAttribute.cs" />
+    <Compile Include="Generated\EkTracking\EkTrackingAttribute.cs" />
+    <Compile Include="Generated\EkPopup\EkPopupContext.cs" />
+    <Compile Include="Generated\EkRequest\EkRequestContext.cs" />
+    <Compile Include="Generated\EkTracking\EkTrackingContext.cs" />
+    <Compile Include="Generated\EkPopup\EkPopupMatcher.cs" />
+    <Compile Include="Generated\EkRequest\EkRequestMatcher.cs" />
+    <Compile Include="Generated\EkTracking\EkTrackingMatcher.cs" />
+    <Compile Include="Generated\Contexts.cs" />
+    <Compile Include="Generated\EkPopup\EkPopupEntity.cs" />
+    <Compile Include="Generated\EkRequest\EkRequestEntity.cs" />
+    <Compile Include="Generated\EkTracking\EkTrackingEntity.cs" />
+    <Compile Include="Systems\DamagePopupInitializeSystem.cs" />
+    <Compile Include="UIInterfaces\CIViewCombatPopups.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\SlidePosition.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\AnimationKey.cs" />
+    <Compile Include="Components\CombatUnitID.cs" />
+    <Compile Include="Components\DamageTracker.cs" />
+    <Compile Include="Components\Dirty.cs" />
+    <Compile Include="Components\Popup.cs" />
+    <Compile Include="Components\DamageText.cs" />
+    <Compile Include="Components\DisplayText.cs" />
+    <Compile Include="Components\Position.cs" />
+    <Compile Include="Components\SlideAnimation.cs" />
+    <Compile Include="Components\Slot.cs" />
+    <Compile Include="Components\SpriteDisposal.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Helpers\AnimationHelper.cs" />
+    <Compile Include="Systems\DamagePopupAnimationSystem.cs" />
+    <Compile Include="Systems\DamagePopupBuildSystem.cs" />
+    <Compile Include="Systems\DamagePopupSlideSystem.cs" />
+    <Compile Include="Systems\DamagePopupSortSystem.cs" />
+    <Compile Include="Systems\DamagePopupTrackerSystem.cs" />
+    <Compile Include="Systems\RequestDestroySystem.cs" />
+    <Compile Include="Systems\SpriteDisposalSystem.cs" />
+    <Compile Include="SystemInstaller.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Patches\CIViewCombatPopups.cs" />
+    <Compile Include="Patches\Heartbeat.cs" />
     <Compile Include="ModLink.cs" />
     <Compile Include="Patch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

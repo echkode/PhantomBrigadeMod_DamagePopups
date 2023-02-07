@@ -1,7 +1,9 @@
 ﻿using System;
 
 using HarmonyLib;
+
 using PBModManager = PhantomBrigade.Mods.ModManager;
+
 using UnityEngine;
 
 namespace EchKode.PBMods.DamagePopups
@@ -32,6 +34,8 @@ namespace EchKode.PBMods.DamagePopups
 				FileLog.Log($"{new string('=', 20)} Start [{DateTime.Now:u}] {new string('=', 20)}");
 				FileLog.Log("!!! PBMods patches applied");
 			}
+
+			SystemInstaller.InstallAll();
 		}
 	}
 }
