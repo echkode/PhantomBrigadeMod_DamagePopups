@@ -7,7 +7,7 @@ namespace EchKode.PBMods.DamagePopups.ECS
 	[EkPopup]
 	public sealed class SlideAnimation : IComponent
 	{
-		public double startTime;
+		public float startTime;
 		public Vector2 slideToOffset;
 		public int slot;
 	}

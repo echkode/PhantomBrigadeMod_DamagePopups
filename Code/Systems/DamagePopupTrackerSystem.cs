@@ -14,7 +14,7 @@ namespace EchKode.PBMods.DamagePopups
 
 		public void Execute()
 		{
-			var now = Time.realtimeSinceStartupAsDouble;
+			var now = Contexts.sharedInstance.combat.simulationTime.f;
 			foreach (var req in ECS.Contexts.sharedInstance.ekRequest.GetEntities())
 			{
 				var trackingEntities = ECS.Contexts.sharedInstance.ekTracking.GetEntitiesWithCombatUnitID(req.combatUnitID.id);
@@ -43,7 +43,7 @@ namespace EchKode.PBMods.DamagePopups
 		static bool TryUpdateTracker(
 			HashSet<ECS.EkTrackingEntity> trackingEntities,
 			ECS.EkRequestEntity req,
-			double now)
+			float now)
 		{
 			foreach (var tracking in trackingEntities)
 			{
@@ -79,7 +79,7 @@ namespace EchKode.PBMods.DamagePopups
 			return false;
 		}
 
-		static void AddTracker(ECS.EkRequestEntity req, double now)
+		static void AddTracker(ECS.EkRequestEntity req, float now)
 		{
 			var tracking = ECS.Contexts.sharedInstance.ekTracking.CreateEntity();
 			tracking.AddCombatUnitID(req.combatUnitID.id);

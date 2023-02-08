@@ -13,7 +13,7 @@ namespace EchKode.PBMods.DamagePopups.ECS
 		public DisplayText displayText { get { return (DisplayText)GetComponent(EkPopupComponentsLookup.DisplayText); } }
 		public bool hasDisplayText { get { return HasComponent(EkPopupComponentsLookup.DisplayText); } }
 
-		public void AddDisplayText(string newText, int newSpriteIDBase, double newStartTime)
+		public void AddDisplayText(string newText, int newSpriteIDBase, float newStartTime)
 		{
 			var index = EkPopupComponentsLookup.DisplayText;
 			var component = (DisplayText)CreateComponent(index, typeof(DisplayText));
@@ -23,7 +23,7 @@ namespace EchKode.PBMods.DamagePopups.ECS
 			AddComponent(index, component);
 		}
 
-		public void ReplaceDisplayText(string newText, int newSpriteIDBase, double newStartTime)
+		public void ReplaceDisplayText(string newText, int newSpriteIDBase, float newStartTime)
 		{
 			var index = EkPopupComponentsLookup.DisplayText;
 			var component = (DisplayText)CreateComponent(index, typeof(DisplayText));

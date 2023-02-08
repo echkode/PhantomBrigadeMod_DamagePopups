@@ -25,15 +25,13 @@ namespace EchKode.PBMods.DamagePopups
 				return;
 			}
 
-			var now = Time.realtimeSinceStartupAsDouble;
-
 			if (logEnabled)
 			{
 				Debug.LogFormat(
 					"Mod {0} ({1}) CIViewCombatPopups.AddDamageText | time: {2:F3} | unit: C-{3} | type: {4} | value: {5} | position: {6}",
 					ModLink.modIndex,
 					ModLink.modId,
-					now,
+					Contexts.sharedInstance.combat.simulationTime.f,
 					unitCombat.id.id,
 					animKey,
 					value,

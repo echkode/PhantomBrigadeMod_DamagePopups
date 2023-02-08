@@ -13,7 +13,7 @@ namespace EchKode.PBMods.DamagePopups.ECS
 		public DamageTracker damageTracker { get { return (DamageTracker)GetComponent(EkTrackingComponentsLookup.DamageTracker); } }
 		public bool hasDamageTracker { get { return HasComponent(EkTrackingComponentsLookup.DamageTracker); } }
 
-		public void AddDamageTracker(string newText, float newAccumulatedValue, double newTimeLast)
+		public void AddDamageTracker(string newText, float newAccumulatedValue, float newTimeLast)
 		{
 			var index = EkTrackingComponentsLookup.DamageTracker;
 			var component = (DamageTracker)CreateComponent(index, typeof(DamageTracker));
@@ -23,7 +23,7 @@ namespace EchKode.PBMods.DamagePopups.ECS
 			AddComponent(index, component);
 		}
 
-		public void ReplaceDamageTracker(string newText, float newAccumulatedValue, double newTimeLast)
+		public void ReplaceDamageTracker(string newText, float newAccumulatedValue, float newTimeLast)
 		{
 			var index = EkTrackingComponentsLookup.DamageTracker;
 			var component = (DamageTracker)CreateComponent(index, typeof(DamageTracker));

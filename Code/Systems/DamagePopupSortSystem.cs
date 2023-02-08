@@ -13,6 +13,11 @@ namespace EchKode.PBMods.DamagePopups
 
 		public void Execute()
 		{
+			if (!Contexts.sharedInstance.combat.Simulating)
+			{
+				return;
+			}
+
 			foreach (var popups in popupsLookup.Values)
 			{
 				popups.Clear();
@@ -52,7 +57,7 @@ namespace EchKode.PBMods.DamagePopups
 		{
 			popups.Sort(recencyComparison);
 
-			var now = Time.realtimeSinceStartupAsDouble;
+			var now = Contexts.sharedInstance.combat.simulationTime.f;
 			for (var i = 0; i < popups.Count; i += 1)
 			{
 				var ekp = popups[i];

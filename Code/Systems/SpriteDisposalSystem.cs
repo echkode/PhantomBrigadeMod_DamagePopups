@@ -10,6 +10,7 @@ namespace EchKode.PBMods.DamagePopups
 
 		public void Execute()
 		{
+			var now = Contexts.sharedInstance.combat.simulationTime.f;
 			foreach (var ekp in ECS.Contexts.sharedInstance.ekPopup.GetEntities())
 			{
 				if (!ekp.hasSpriteDisposal)
@@ -22,10 +23,10 @@ namespace EchKode.PBMods.DamagePopups
 				if (logEnabled)
 				{
 					Debug.LogFormat(
-						"Mod {0} ({1}) CIViewCombatPopups.DisposeSprites | time: {2} | popup: {3} | sprites: {4}-{5}",
+						"Mod {0} ({1}) CIViewCombatPopups.DisposeSprites | time: {2:F3} | popup: {3} | sprites: {4}-{5}",
 						ModLink.modIndex,
 						ModLink.modId,
-						Time.realtimeSinceStartupAsDouble,
+						now,
 						ekp.spriteDisposal.popupID,
 						ekp.spriteDisposal.spriteIDBase,
 						ekp.spriteDisposal.spriteIDBase + ekp.spriteDisposal.count - 1);

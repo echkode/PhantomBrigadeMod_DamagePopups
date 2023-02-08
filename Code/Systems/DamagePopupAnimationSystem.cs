@@ -17,6 +17,7 @@ namespace EchKode.PBMods.DamagePopups
 		private static readonly List<ECS.EkPopupEntity> popups = new List<ECS.EkPopupEntity>();
 		private static readonly System.Comparison<ECS.EkPopupEntity> popupComparison = new System.Comparison<ECS.EkPopupEntity>(ComparePopups);
 		private static float playbackSpeed = 1f;
+		private static bool shown;
 
 		public void Initialize()
 		{
@@ -25,21 +26,44 @@ namespace EchKode.PBMods.DamagePopups
 
 		public void Execute()
 		{
-			popups.Clear();
-			foreach (var ekp in ECS.Contexts.sharedInstance.ekPopup.GetEntities())
+			var combat = Contexts.sharedInstance.combat;
+			if (combat.Simulating && combat.simulationDeltaTime.f == 0f)
 			{
-				if (!ekp.hasPopup)
-				{
-					continue;
-				}
-				if (ekp.hasSlideAnimation)
-				{
-					continue;
-				}
-				popups.Add(ekp);
+				return;
 			}
 
-			AnimateText();
+			if (combat.Simulating || shown)
+			{
+				popups.Clear();
+				foreach (var ekp in ECS.Contexts.sharedInstance.ekPopup.GetEntities())
+				{
+					if (!ekp.hasPopup)
+					{
+						continue;
+					}
+					if (ekp.hasSlideAnimation)
+					{
+						continue;
+					}
+					popups.Add(ekp);
+				}
+			}
+
+			if (combat.Simulating)
+			{
+				shown = true;
+				AnimateText();
+				return;
+			}
+
+			if (shown)
+			{
+				shown = false;
+				foreach (var ekp in popups)
+				{
+					AnimationHelper.HidePopup(ekp);
+				}
+			}
 		}
 
 		public void TearDown()
@@ -49,14 +73,15 @@ namespace EchKode.PBMods.DamagePopups
 
 		static void AnimateText()
 		{
+			var now = Contexts.sharedInstance.combat.simulationTime.f;
 			popups.Sort(popupComparison);
 			foreach (var ekp in popups)
 			{
 				var definition = CIViewCombatPopups.GetDefinition(ekp.animationKey.s);
-				var elapsedTime = (Time.unscaledTime - ekp.displayText.startTime) * playbackSpeed;
+				var elapsedTime = (now - ekp.displayText.startTime) * playbackSpeed;
 				if (elapsedTime >= definition.timeTotal)
 				{
-					DestroyPopup(ekp);
+					DestroyPopup(ekp, now);
 					continue;
 				}
 
@@ -73,10 +98,10 @@ namespace EchKode.PBMods.DamagePopups
 				if (logEnabled)
 				{
 					Debug.LogFormat(
-						"Mod {0} ({1}) CIViewCombatPopups.AnimateText | time: {2} | popup: {3} | key: {4} | start time: {5} | slot: {6} | unit position: {7} | slot offset: {8} | interpolant: {9} | segment count: {10}",
+						"Mod {0} ({1}) DamagePopupAnimationSystem.AnimateText | time: {2:F3} | popup: {3} | key: {4} | start time: {5:F3} | slot: {6} | unit position: {7} | slot offset: {8} | interpolant: {9} | segment count: {10}",
 						ModLink.modIndex,
 						ModLink.modId,
-						Time.realtimeSinceStartupAsDouble,
+						now,
 						ekp.popup.popupID,
 						definition.key,
 						ekp.displayText.startTime,
@@ -92,7 +117,8 @@ namespace EchKode.PBMods.DamagePopups
 					definition,
 					position,
 					slotOffset,
-					interpolantShared);
+					interpolantShared,
+					now);
 			}
 		}
 
@@ -101,7 +127,8 @@ namespace EchKode.PBMods.DamagePopups
 			PBCIViewPopups.PopupDefinition definition,
 			Vector2 position,
 			Vector2 slotOffset,
-			float interpolantShared)
+			float interpolantShared,
+			float now)
 		{
 			if (definition.timeCurveUsed)
 			{
@@ -134,10 +161,10 @@ namespace EchKode.PBMods.DamagePopups
 			if (logEnabled)
 			{
 				Debug.LogFormat(
-					"Mod {0} ({1}) DamagePopupAnimationSystem.AnimatePopup | time: {2} | popup: {3} | key: {4} | position: {5} | offset: {6} | interpolant: {7} | segments: {8}",
+					"Mod {0} ({1}) DamagePopupAnimationSystem.AnimatePopup | time: {2:F3} | popup: {3} | key: {4} | position: {5} | offset: {6} | interpolant: {7} | segments: {8}",
 					ModLink.modIndex,
 					ModLink.modId,
-					Time.realtimeSinceStartupAsDouble,
+					now,
 					ekp.popup.popupID,
 					definition.key,
 					position,
@@ -149,7 +176,15 @@ namespace EchKode.PBMods.DamagePopups
 			var spriteIDBase = ekp.displayText.spriteIDBase;
 			for (var i = 0; i < ekp.popup.segments.Count; i += 1)
 			{
-				AnimateSegment(ekp.popup.segments[i], spriteIDBase + i, interpolantShared, position, rotationBase, sizeBase, colorBase);
+				AnimateSegment(
+					ekp.popup.segments[i],
+					spriteIDBase + i,
+					interpolantShared,
+					position,
+					rotationBase,
+					sizeBase,
+					colorBase,
+					now);
 			}
 		}
 
@@ -160,15 +195,16 @@ namespace EchKode.PBMods.DamagePopups
 			Vector2 positionBase,
 			float rotationBase,
 			Vector2 sizeBase,
-			Color colorBase)
+			Color colorBase,
+			float now)
 		{
 			if (logEnabled)
 			{
 				Debug.LogFormat(
-					"Mod {0} ({1}) DamagePopupAnimationSystem.AnimateSegment | time: {2} | sprite ID: {3} | sprite: {4} | position base: {5} | interpolant: {6}",
+					"Mod {0} ({1}) DamagePopupAnimationSystem.AnimateSegment | time: {2:F3} | sprite ID: {3} | sprite: {4} | position base: {5} | interpolant: {6}",
 					ModLink.modIndex,
 					ModLink.modId,
-					Time.realtimeSinceStartupAsDouble,
+					now,
 					spriteIDLocal,
 					segment.sprite,
 					positionBase,
@@ -178,17 +214,17 @@ namespace EchKode.PBMods.DamagePopups
 			CIViewCombatPopups.AnimateSegment(segment, spriteIDLocal, interpolantShared, positionBase, rotationBase, sizeBase, colorBase);
 		}
 
-		static void DestroyPopup(ECS.EkPopupEntity ekp)
+		static void DestroyPopup(ECS.EkPopupEntity ekp, float now)
 		{
 			ResetTracker(ekp);
 
 			if (logEnabled)
 			{
 				Debug.LogFormat(
-					"Mod {0} ({1}) DamagePopupAnimationSystem.DestroyPopup | time: {2} | popup: {3} | unit: C-{4} | spriteID base: {5} | segments: {6}",
+					"Mod {0} ({1}) DamagePopupAnimationSystem.DestroyPopup | time: {2:F3} | popup: {3} | unit: C-{4} | spriteID base: {5} | segments: {6}",
 					ModLink.modIndex,
 					ModLink.modId,
-					Time.realtimeSinceStartupAsDouble,
+					now,
 					ekp.popup.popupID,
 					ekp.combatUnitID.id,
 					ekp.displayText.spriteIDBase,

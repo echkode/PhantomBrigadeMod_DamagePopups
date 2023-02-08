@@ -7,6 +7,6 @@ namespace EchKode.PBMods.DamagePopups.ECS
 	{
 		public string text;
 		public float accumulatedValue;
-		public double timeLast;
+		public float timeLast;
 	}
 }

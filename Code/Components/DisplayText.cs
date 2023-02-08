@@ -7,6 +7,6 @@ namespace EchKode.PBMods.DamagePopups.ECS
 	{
 		public string text;
 		public int spriteIDBase;
-		public double startTime;
+		public float startTime;
 	}
 }

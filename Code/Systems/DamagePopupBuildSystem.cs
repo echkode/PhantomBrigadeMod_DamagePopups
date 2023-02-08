@@ -31,8 +31,12 @@ namespace EchKode.PBMods.DamagePopups
 			{
 				return;
 			}
+			if (!Contexts.sharedInstance.combat.Simulating)
+			{
+				return;
+			}
 
-			var now = Time.unscaledTimeAsDouble;
+			var now = Contexts.sharedInstance.combat.simulationTime.f;
 			foreach (var tracking in ECS.Contexts.sharedInstance.ekTracking.GetEntities())
 			{
 				if (!tracking.hasDamageTracker)
@@ -81,7 +85,7 @@ namespace EchKode.PBMods.DamagePopups
 			}
 		}
 
-		static void CreatePopup(ECS.EkTrackingEntity tracking, int index, double now)
+		static void CreatePopup(ECS.EkTrackingEntity tracking, int index, float now)
 		{
 			if (!CIViewCombatPopups.HasDefinition(tracking.animationKey.s))
 			{
@@ -114,7 +118,7 @@ namespace EchKode.PBMods.DamagePopups
 			if (logEnabled)
 			{
 				Debug.LogFormat(
-					"Mod {0} ({1}) CIViewCombatPopups.CreatePopup | time: {2} | popup: {3} | key: {4} | unit: C-{5} | text: {6} | segments: {7}",
+					"Mod {0} ({1}) DamagePopupBuildSystem.CreatePopup | time: {2:F3} | popup: {3} | key: {4} | unit: C-{5} | text: {6} | segments: {7}",
 					ModLink.modIndex,
 					ModLink.modId,
 					now,
@@ -129,7 +133,7 @@ namespace EchKode.PBMods.DamagePopups
 		static bool TryRefreshPopup(
 			HashSet<ECS.EkPopupEntity> popupEntities,
 			ECS.EkTrackingEntity tracking,
-			double now)
+			float now)
 		{
 			foreach (var ekp in popupEntities)
 			{
@@ -153,7 +157,7 @@ namespace EchKode.PBMods.DamagePopups
 		static void RefreshPopup(
 			ECS.EkPopupEntity ekp,
 			ECS.EkTrackingEntity tracking,
-			double now)
+			float now)
 		{
 			RemoveAllSegments(ekp, now);
 
@@ -171,7 +175,7 @@ namespace EchKode.PBMods.DamagePopups
 			if (logEnabled)
 			{
 				Debug.LogFormat(
-					"Mod {0} ({1}) DamagePopupBuildSystem.RefreshPopup | time: {2} | popup: {3} | text: {4} | spriteID base: {5} | segments: {6}",
+					"Mod {0} ({1}) DamagePopupBuildSystem.RefreshPopup | time: {2:F3} | popup: {3} | text: {4} | spriteID base: {5} | segments: {6}",
 					ModLink.modIndex,
 					ModLink.modId,
 					now,

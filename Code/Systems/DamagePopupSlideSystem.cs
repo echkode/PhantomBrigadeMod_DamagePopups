@@ -14,6 +14,7 @@ namespace EchKode.PBMods.DamagePopups
 
 		private static readonly List<ECS.EkPopupEntity> popups = new List<ECS.EkPopupEntity>();
 		private static float playbackSpeed = 1f;
+		private static bool shown;
 
 		public void Initialize()
 		{
@@ -22,21 +23,44 @@ namespace EchKode.PBMods.DamagePopups
 
 		public void Execute()
 		{
-			popups.Clear();
-			foreach (var ekp in ECS.Contexts.sharedInstance.ekPopup.GetEntities())
+			var combat = Contexts.sharedInstance.combat;
+			if (combat.Simulating && combat.simulationDeltaTime.f == 0f)
 			{
-				if (!ekp.hasPopup)
-				{
-					continue;
-				}
-				if (!ekp.hasSlideAnimation)
-				{
-					continue;
-				}
-				popups.Add(ekp);
+				return;
 			}
 
-			SlidePopups();
+			if (combat.Simulating || shown)
+			{
+				popups.Clear();
+				foreach (var ekp in ECS.Contexts.sharedInstance.ekPopup.GetEntities())
+				{
+					if (!ekp.hasPopup)
+					{
+						continue;
+					}
+					if (!ekp.hasSlideAnimation)
+					{
+						continue;
+					}
+					popups.Add(ekp);
+				}
+			}
+
+			if (combat.Simulating)
+			{
+				shown = true;
+				SlidePopups();
+				return;
+			}
+
+			if (shown)
+			{
+				shown = false;
+				foreach (var ekp in popups)
+				{
+					AnimationHelper.HidePopup(ekp);
+				}
+			}
 		}
 
 		public void TearDown()
@@ -46,9 +70,10 @@ namespace EchKode.PBMods.DamagePopups
 
 		static void SlidePopups()
 		{
+			var now = Contexts.sharedInstance.combat.simulationTime.f;
 			foreach (var ekp in popups)
 			{
-				var elapsedTime = (Time.unscaledTime - ekp.slideAnimation.startTime) * playbackSpeed;
+				var elapsedTime = (now - ekp.slideAnimation.startTime) * playbackSpeed;
 				if (elapsedTime >= CIViewCombatPopups.Constants.SlideAnimationTime)
 				{
 					ekp.ReplaceSlot(ekp.slideAnimation.slot);
@@ -69,7 +94,8 @@ namespace EchKode.PBMods.DamagePopups
 					ekp,
 					definition,
 					position,
-					interpolantShared);
+					interpolantShared,
+					now);
 			}
 		}
 
@@ -77,7 +103,8 @@ namespace EchKode.PBMods.DamagePopups
 			ECS.EkPopupEntity ekp,
 			PBCIViewPopups.PopupDefinition definition,
 			Vector2 position,
-			float interpolantShared)
+			float interpolantShared,
+			float now)
 		{
 			var positionTo = position + ekp.slideAnimation.slideToOffset;
 			if (definition.positionRounded)
@@ -89,10 +116,10 @@ namespace EchKode.PBMods.DamagePopups
 			if (logEnabled)
 			{
 				Debug.LogFormat(
-					"Mod {0} ({1}) DamagePopupAnimationSystem.SlidePopup | time: {2} | popup: {3} | key: {4} | start time: {5} | position: {6} | target slot: {7} | slide position: {8} | interpolant: {9} | segment count: {10}",
+					"Mod {0} ({1}) DamagePopupAnimationSystem.SlidePopup | time: {2:F3} | popup: {3} | key: {4} | start time: {5} | position: {6} | target slot: {7} | slide position: {8} | interpolant: {9} | segment count: {10}",
 					ModLink.modIndex,
 					ModLink.modId,
-					Time.realtimeSinceStartupAsDouble,
+					now,
 					ekp.popup.popupID,
 					ekp.animationKey.s,
 					ekp.slideAnimation.startTime,

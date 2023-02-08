@@ -13,7 +13,7 @@ namespace EchKode.PBMods.DamagePopups.ECS
 		public SlideAnimation slideAnimation { get { return (SlideAnimation)GetComponent(EkPopupComponentsLookup.SlideAnimation); } }
 		public bool hasSlideAnimation { get { return HasComponent(EkPopupComponentsLookup.SlideAnimation); } }
 
-		public void AddSlideAnimation(double newStartTime, UnityEngine.Vector2 newSlideToOffset, int newSlot)
+		public void AddSlideAnimation(float newStartTime, UnityEngine.Vector2 newSlideToOffset, int newSlot)
 		{
 			var index = EkPopupComponentsLookup.SlideAnimation;
 			var component = (SlideAnimation)CreateComponent(index, typeof(SlideAnimation));
@@ -23,7 +23,7 @@ namespace EchKode.PBMods.DamagePopups.ECS
 			AddComponent(index, component);
 		}
 
-		public void ReplaceSlideAnimation(double newStartTime, UnityEngine.Vector2 newSlideToOffset, int newSlot)
+		public void ReplaceSlideAnimation(float newStartTime, UnityEngine.Vector2 newSlideToOffset, int newSlot)
 		{
 			var index = EkPopupComponentsLookup.SlideAnimation;
 			var component = (SlideAnimation)CreateComponent(index, typeof(SlideAnimation));
