@@ -4,8 +4,6 @@ namespace EchKode.PBMods.DamagePopups
 {
 	static partial class CIViewCombatPopups
 	{
-		internal static bool logEnabled = false;
-
 		internal static void AddDamageText(
 			CombatEntity unitCombat,
 			string animKey,
@@ -25,7 +23,7 @@ namespace EchKode.PBMods.DamagePopups
 				return;
 			}
 
-			if (logEnabled)
+			if (ModLink.Settings.enableLogging)
 			{
 				Debug.LogFormat(
 					"Mod {0} ({1}) CIViewCombatPopups.AddDamageText | time: {2:F3} | unit: C-{3} | type: {4} | value: {5} | position: {6}",

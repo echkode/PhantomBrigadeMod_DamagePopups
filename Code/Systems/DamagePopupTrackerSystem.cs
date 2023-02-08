@@ -8,9 +8,14 @@ namespace EchKode.PBMods.DamagePopups
 {
 	using static ECS.ContextsExtensions;
 
-	sealed class DamagePopupTrackerSystem : IExecuteSystem, ITearDownSystem
+	sealed class DamagePopupTrackerSystem : IInitializeSystem, IExecuteSystem, ITearDownSystem
 	{
-		internal static bool logEnabled = false;
+		private static bool logEnabled;
+
+		public void Initialize()
+		{
+			logEnabled = ModLink.Settings.enableLogging;
+		}
 
 		public void Execute()
 		{

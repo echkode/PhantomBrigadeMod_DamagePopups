@@ -96,6 +96,7 @@
     <Compile Include="Generated\EkPopup\EkPopupEntity.cs" />
     <Compile Include="Generated\EkRequest\EkRequestEntity.cs" />
     <Compile Include="Generated\EkTracking\EkTrackingEntity.cs" />
+    <Compile Include="ModSettings.cs" />
     <Compile Include="Systems\DamagePopupInitializeSystem.cs" />
     <Compile Include="UIInterfaces\CIViewCombatPopups.cs" />
   </ItemGroup>

@@ -6,8 +6,6 @@ namespace EchKode.PBMods.DamagePopups
 {
 	sealed class SpriteDisposalSystem : IExecuteSystem, ITearDownSystem
 	{
-		internal static bool logEnabled = false;
-
 		public void Execute()
 		{
 			var now = Contexts.sharedInstance.combat.simulationTime.f;
@@ -20,7 +18,7 @@ namespace EchKode.PBMods.DamagePopups
 
 				AnimationHelper.DisposeSprites(ekp.spriteDisposal.spriteIDBase, ekp.spriteDisposal.count);
 
-				if (logEnabled)
+				if (ModLink.Settings.enableLogging)
 				{
 					Debug.LogFormat(
 						"Mod {0} ({1}) CIViewCombatPopups.DisposeSprites | time: {2:F3} | popup: {3} | sprites: {4}-{5}",

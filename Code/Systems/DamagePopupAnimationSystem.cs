@@ -12,7 +12,7 @@ namespace EchKode.PBMods.DamagePopups
 
 	sealed class DamagePopupAnimationSystem : IInitializeSystem, IExecuteSystem, ITearDownSystem
 	{
-		internal static bool logEnabled = false;
+		private static bool logEnabled;
 
 		private static readonly List<ECS.EkPopupEntity> popups = new List<ECS.EkPopupEntity>();
 		private static readonly System.Comparison<ECS.EkPopupEntity> popupComparison = new System.Comparison<ECS.EkPopupEntity>(ComparePopups);
@@ -21,6 +21,7 @@ namespace EchKode.PBMods.DamagePopups
 
 		public void Initialize()
 		{
+			logEnabled = ModLink.Settings.enableLogging;
 			playbackSpeed = CIViewCombatPopups.PlaybackSpeed;
 		}
 

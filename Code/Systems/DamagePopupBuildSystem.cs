@@ -14,13 +14,14 @@ namespace EchKode.PBMods.DamagePopups
 
 	sealed class DamagePopupBuildSystem : IInitializeSystem, IExecuteSystem, ITearDownSystem
 	{
-		internal static bool logEnabled = false;
+		private static bool logEnabled;
 
 		private static bool initialized;
 		private static INGUIAtlas atlas;
 
 		public void Initialize()
 		{
+			logEnabled = ModLink.Settings.enableLogging;
 			atlas = CIViewCombatPopups.SpriteAtlas;
 			initialized = atlas != null;
 		}

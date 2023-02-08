@@ -25,6 +25,8 @@ namespace EchKode.PBMods.DamagePopups
 			modId = metadata.id;
 			modPath = metadata.path;
 
+			LoadSettings();
+
 			var patchAssembly = typeof(ModLink).Assembly;
 			Debug.Log($"Mod {metadata.id} is executing OnLoad | Using HarmonyInstance.PatchAll on assembly ({patchAssembly.FullName}) | Directory: {metadata.directory} | Full path: {metadata.path}");
 			harmonyInstance.PatchAll(patchAssembly);

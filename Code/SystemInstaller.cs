@@ -26,11 +26,14 @@ namespace EchKode.PBMods.DamagePopups
 		internal static void InstallAtEnd(Systems feature, ISystem installee)
 		{
 			feature.Add(installee);
-			Debug.LogFormat(
-				"Mod {0} ({1}) installed system {2}",
-				ModLink.modIndex,
-				ModLink.modId,
-				installee.GetType().FullName);
+			if (ModLink.Settings.enableLogging)
+			{
+				Debug.LogFormat(
+					"Mod {0} ({1}) installed system {2}",
+					ModLink.modIndex,
+					ModLink.modId,
+					installee.GetType().FullName);
+			}
 		}
 
 		internal static void InstallBefore<T>(Systems feature, ISystem installee)
@@ -131,16 +134,19 @@ namespace EchKode.PBMods.DamagePopups
 				}
 			}
 
-			var fmt = insert
-				? "Mod {0} ({1}) InstallBefore inserted system {2} ({3}) before {4}"
-				: "Mod {0} ({1}) InstallBefore did not find system {4} so appended system {2} ({3})";
-			Debug.LogFormat(
-				fmt,
-				ModLink.modIndex,
-				ModLink.modId,
-				installee.GetType().FullName,
-				typeof(S).Name,
-				typeof(T).Name);
+			if (ModLink.Settings.enableLogging)
+			{
+				var fmt = insert
+					? "Mod {0} ({1}) InstallBefore inserted system {2} ({3}) before {4}"
+					: "Mod {0} ({1}) InstallBefore did not find system {4} so appended system {2} ({3})";
+				Debug.LogFormat(
+					fmt,
+					ModLink.modIndex,
+					ModLink.modId,
+					installee.GetType().FullName,
+					typeof(S).Name,
+					typeof(T).Name);
+			}
 		}
 	}
 }
