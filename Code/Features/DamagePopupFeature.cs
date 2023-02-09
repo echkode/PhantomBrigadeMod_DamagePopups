@@ -11,6 +11,10 @@
 			Add(new DamagePopupSlideSystem());
 			Add(new DamagePopupAnimationSystem());
 			Add(new SpriteDisposalSystem());
+			if (ModLink.Settings.replayPopups != ModLink.ModSettings.ReplayPopup.None)
+			{
+				Add(new ReplayPopupFeature());
+			}
 			Add(new RequestDestroySystem());
 		}
 

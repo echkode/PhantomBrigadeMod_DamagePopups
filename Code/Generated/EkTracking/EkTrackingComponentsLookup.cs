@@ -12,23 +12,29 @@ namespace EchKode.PBMods.DamagePopups.ECS
 	{
 		public const int AnimationKey = 0;
 		public const int CombatUnitID = 1;
-		public const int DamageTracker = 2;
-		public const int Dirty = 3;
+		public const int DamageHistory = 2;
+		public const int DamageTracker = 3;
+		public const int Dirty = 4;
+		public const int PositionTracker = 5;
 
-		public const int TotalComponents = 4;
+		public const int TotalComponents = 6;
 
 		public static readonly string[] componentNames = {
 			"AnimationKey",
 			"CombatUnitID",
+			"DamageHistory",
 			"DamageTracker",
-			"Dirty"
+			"Dirty",
+			"PositionTracker"
 		};
 
 		public static readonly System.Type[] componentTypes = {
 			typeof(AnimationKey),
 			typeof(CombatUnitID),
+			typeof(DamageHistory),
 			typeof(DamageTracker),
-			typeof(Dirty)
+			typeof(Dirty),
+			typeof(PositionTracker)
 		};
 	}
 }

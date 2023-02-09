@@ -18,7 +18,7 @@ namespace EchKode.PBMods.DamagePopups
 
 				AnimationHelper.DisposeSprites(ekp.spriteDisposal.spriteIDBase, ekp.spriteDisposal.count);
 
-				if (ModLink.Settings.enableLogging)
+				if (ModLink.Settings.IsLoggingEnabled(ModLink.ModSettings.LoggingFlag.Build))
 				{
 					Debug.LogFormat(
 						"Mod {0} ({1}) CIViewCombatPopups.DisposeSprites | time: {2:F3} | popup: {3} | sprites: {4}-{5}",

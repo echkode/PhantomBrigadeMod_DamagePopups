@@ -47,6 +47,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\Entitas.CodeGeneration.Attributes.dll</HintPath>
     </Reference>
+    <Reference Include="QFSW.QC">
+      <HintPath>..\..\..\..\..\Program Files\Epic Games\PhantomAlpha\PhantomBrigade_Data\Managed\QFSW.QC.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,43 +64,120 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Features\DamagePopupFeature.cs" />
+    <Compile Include="Generated\EkReplay\Components\EkReplaySummaryTextFormatComponent.cs" />
+    <Compile Include="Generated\EkReplay\Components\EkReplayTurnComponent.cs" />
+    <Compile Include="Generated\EkReplay\Components\EkReplayActiveComponent.cs" />
+    <Compile Include="Generated\EkReplay\Components\EkReplaySampleComponent.cs" />
+    <Compile Include="Generated\EkReplay\Components\EkReplayReplayValueComponent.cs" />
+    <Compile Include="Generated\EkReplay\Components\EkReplayDisplayInterpolationComponent.cs" />
+    <Compile Include="Generated\EkReplay\Components\EkReplayReplaySlotsComponent.cs" />
+    <Compile Include="Generated\EkReplay\Components\EkReplayDamageAccumulationComponent.cs" />
+    <Compile Include="Generated\EkReplay\Components\EkReplayDamageSummaryComponent.cs" />
+    <Compile Include="Generated\EkTracking\Components\EkTrackingPositionTrackerComponent.cs" />
+    <Compile Include="Generated\EkReplay\Components\EkReplayPositionTrackerComponent.cs" />
+    <Compile Include="Generated\EkTracking\Components\EkTrackingDamageHistoryComponent.cs" />
     <Compile Include="Generated\EkPopup\Components\EkPopupSlidePositionComponent.cs" />
     <Compile Include="Generated\EkPopup\Components\EkPopupAnimationKeyComponent.cs" />
     <Compile Include="Generated\EkRequest\Components\EkRequestAnimationKeyComponent.cs" />
     <Compile Include="Generated\EkTracking\Components\EkTrackingAnimationKeyComponent.cs" />
+    <Compile Include="Generated\EkReplay\Components\EkReplayAnimationKeyComponent.cs" />
     <Compile Include="Generated\EkPopup\Components\EkPopupCombatUnitIDComponent.cs" />
     <Compile Include="Generated\EkRequest\Components\EkRequestCombatUnitIDComponent.cs" />
     <Compile Include="Generated\EkTracking\Components\EkTrackingCombatUnitIDComponent.cs" />
+    <Compile Include="Generated\EkReplay\Components\EkReplayCombatUnitIDComponent.cs" />
     <Compile Include="Generated\EkTracking\Components\EkTrackingDamageTrackerComponent.cs" />
     <Compile Include="Generated\EkTracking\Components\EkTrackingDirtyComponent.cs" />
     <Compile Include="Generated\EkPopup\Components\EkPopupPopupComponent.cs" />
+    <Compile Include="Generated\EkReplay\Components\EkReplayPopupComponent.cs" />
     <Compile Include="Generated\EkRequest\Components\EkRequestDamageTextComponent.cs" />
     <Compile Include="Generated\EkPopup\Components\EkPopupDisplayTextComponent.cs" />
+    <Compile Include="Generated\EkReplay\Components\EkReplayDisplayTextComponent.cs" />
     <Compile Include="Generated\EkPopup\Components\EkPopupPositionComponent.cs" />
     <Compile Include="Generated\EkPopup\Components\EkPopupSlideAnimationComponent.cs" />
     <Compile Include="Generated\EkPopup\Components\EkPopupSlotComponent.cs" />
     <Compile Include="Generated\EkPopup\Components\EkPopupSpriteDisposalComponent.cs" />
+    <Compile Include="Generated\Components\Interfaces\IPositionTrackerEntity.cs" />
     <Compile Include="Generated\Components\Interfaces\IAnimationKeyEntity.cs" />
     <Compile Include="Generated\Components\Interfaces\ICombatUnitIDEntity.cs" />
+    <Compile Include="Generated\Components\Interfaces\IPopupEntity.cs" />
+    <Compile Include="Generated\Components\Interfaces\IDisplayTextEntity.cs" />
+    <Compile Include="Generated\EkReplay\EkReplayComponentsLookup.cs" />
+    <Compile Include="Generated\EkTracking\EkTrackingComponentsLookup.cs" />
     <Compile Include="Generated\EkPopup\EkPopupComponentsLookup.cs" />
     <Compile Include="Generated\EkRequest\EkRequestComponentsLookup.cs" />
-    <Compile Include="Generated\EkTracking\EkTrackingComponentsLookup.cs" />
     <Compile Include="Generated\EkPopup\EkPopupAttribute.cs" />
     <Compile Include="Generated\EkRequest\EkRequestAttribute.cs" />
     <Compile Include="Generated\EkTracking\EkTrackingAttribute.cs" />
+    <Compile Include="Generated\EkReplay\EkReplayAttribute.cs" />
     <Compile Include="Generated\EkPopup\EkPopupContext.cs" />
     <Compile Include="Generated\EkRequest\EkRequestContext.cs" />
     <Compile Include="Generated\EkTracking\EkTrackingContext.cs" />
+    <Compile Include="Generated\EkReplay\EkReplayContext.cs" />
     <Compile Include="Generated\EkPopup\EkPopupMatcher.cs" />
     <Compile Include="Generated\EkRequest\EkRequestMatcher.cs" />
     <Compile Include="Generated\EkTracking\EkTrackingMatcher.cs" />
+    <Compile Include="Generated\EkReplay\EkReplayMatcher.cs" />
     <Compile Include="Generated\Contexts.cs" />
     <Compile Include="Generated\EkPopup\EkPopupEntity.cs" />
     <Compile Include="Generated\EkRequest\EkRequestEntity.cs" />
     <Compile Include="Generated\EkTracking\EkTrackingEntity.cs" />
+    <Compile Include="Generated\EkReplay\EkReplayEntity.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\ReplayValue.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\DisplayInterpolation.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Diagnostics\ConsoleExtensions.cs" />
+    <Compile Include="Diagnostics\Constants.cs" />
+    <Compile Include="Diagnostics\Console.cs" />
+    <Compile Include="Diagnostics\ReplayTables.cs" />
+    <Compile Include="Diagnostics\ReplayTablesInternals.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\ReplaySlots.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\DamageAccumulation.cs" />
+    <Compile Include="Components\DamageSummary.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Features\ReplayPopupFeature.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\PositionTracker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\SummaryTextFormat.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\Turn.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\Active.cs" />
+    <Compile Include="Components\Sample.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\DamageHistory.cs" />
+    <Compile Include="Features\DamagePopupFeature.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Helpers\ReplayHelper.cs" />
+    <Compile Include="Helpers\UnitHelper.cs" />
     <Compile Include="ModSettings.cs" />
+    <Compile Include="Patches\CombatReplayHelper.cs" />
+    <Compile Include="Systems\ReplayExitSystem.cs" />
+    <Compile Include="Systems\ReplayPopupDisplaySystem.cs" />
+    <Compile Include="Systems\ReplayAccumulationSystem.cs" />
+    <Compile Include="Systems\ReplayPopupSlotSystem.cs" />
+    <Compile Include="Systems\ReplaySummarySystem.cs" />
     <Compile Include="Systems\DamagePopupInitializeSystem.cs" />
+    <Compile Include="Systems\ReplayTurnSystem.cs" />
+    <Compile Include="Systems\SampleCarryOverSystem.cs" />
+    <Compile Include="Systems\ReplayPopupBuildSystem.cs" />
+    <Compile Include="Systems\ReplayPositionTrackerSystem.cs" />
+    <Compile Include="Systems\ReplayTablesDestroySystem.cs" />
     <Compile Include="UIInterfaces\CIViewCombatPopups.cs" />
   </ItemGroup>
   <ItemGroup>

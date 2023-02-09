@@ -13,7 +13,7 @@ namespace EchKode.PBMods.DamagePopups.ECS
 		public Position position { get { return (Position)GetComponent(EkPopupComponentsLookup.Position); } }
 		public bool hasPosition { get { return HasComponent(EkPopupComponentsLookup.Position); } }
 
-		public void AddPosition(UnityEngine.Vector2 newV)
+		public void AddPosition(UnityEngine.Vector3 newV)
 		{
 			var index = EkPopupComponentsLookup.Position;
 			var component = (Position)CreateComponent(index, typeof(Position));
@@ -21,7 +21,7 @@ namespace EchKode.PBMods.DamagePopups.ECS
 			AddComponent(index, component);
 		}
 
-		public void ReplacePosition(UnityEngine.Vector2 newV)
+		public void ReplacePosition(UnityEngine.Vector3 newV)
 		{
 			var index = EkPopupComponentsLookup.Position;
 			var component = (Position)CreateComponent(index, typeof(Position));

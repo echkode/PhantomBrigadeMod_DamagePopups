@@ -79,9 +79,9 @@ namespace EchKode.PBMods.DamagePopups
 
 		static int ComparePopupsByRecency(ECS.EkPopupEntity x, ECS.EkPopupEntity y)
 		{
-			if (System.Math.Abs(x.displayText.startTime - y.displayText.startTime) < CIViewCombatPopups.Constants.SlideThreshold)
+			if (Mathf.Abs(x.displayText.startTime - y.displayText.startTime) < CIViewCombatPopups.Constants.SlideThreshold)
 			{
-				return 0;
+				return x.slot.i.CompareTo(y.slot.i);
 			}
 			return -x.displayText.startTime.CompareTo(y.displayText.startTime);
 		}

@@ -6,7 +6,7 @@ using PBCIViewPopups = CIViewPopups;
 
 namespace EchKode.PBMods.DamagePopups.ECS
 {
-	[EkPopup]
+	[EkPopup, EkReplay]
 	public sealed class Popup : IComponent
 	{
 		public int popupID;

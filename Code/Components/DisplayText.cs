@@ -2,7 +2,7 @@
 
 namespace EchKode.PBMods.DamagePopups.ECS
 {
-	[EkPopup]
+	[EkPopup, EkReplay]
 	public sealed class DisplayText : IComponent
 	{
 		public string text;

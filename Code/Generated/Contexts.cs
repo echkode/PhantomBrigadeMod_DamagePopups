@@ -27,14 +27,16 @@ namespace EchKode.PBMods.DamagePopups.ECS
 		static Contexts _sharedInstance;
 
 		public EkPopupContext ekPopup { get; set; }
+		public EkReplayContext ekReplay { get; set; }
 		public EkRequestContext ekRequest { get; set; }
 		public EkTrackingContext ekTracking { get; set; }
 
-		public Entitas.IContext[] allContexts { get { return new Entitas.IContext[] { ekPopup, ekRequest, ekTracking }; } }
+		public Entitas.IContext[] allContexts { get { return new Entitas.IContext[] { ekPopup, ekReplay, ekRequest, ekTracking }; } }
 
 		public Contexts()
 		{
 			ekPopup = new EkPopupContext();
+			ekReplay = new EkReplayContext();
 			ekRequest = new EkRequestContext();
 			ekTracking = new EkTrackingContext();
 
@@ -86,6 +88,10 @@ namespace EchKode.PBMods.DamagePopups.ECS
 				CombatUnitID,
 				ekTracking.GetGroup(EkTrackingMatcher.CombatUnitID),
 				(e, c) => ((CombatUnitID)c).id));
+			ekReplay.AddEntityIndex(new Entitas.EntityIndex<EkReplayEntity, int>(
+				CombatUnitID,
+				ekReplay.GetGroup(EkReplayMatcher.CombatUnitID),
+				(e, c) => ((CombatUnitID)c).id));
 		}
 	}
 
@@ -104,6 +110,11 @@ namespace EchKode.PBMods.DamagePopups.ECS
 		public static System.Collections.Generic.HashSet<EkTrackingEntity> GetEntitiesWithCombatUnitID(this EkTrackingContext context, int id)
 		{
 			return ((Entitas.EntityIndex<EkTrackingEntity, int>)context.GetEntityIndex(Contexts.CombatUnitID)).GetEntities(id);
+		}
+
+		public static System.Collections.Generic.HashSet<EkReplayEntity> GetEntitiesWithCombatUnitID(this EkReplayContext context, int id)
+		{
+			return ((Entitas.EntityIndex<EkReplayEntity, int>)context.GetEntityIndex(Contexts.CombatUnitID)).GetEntities(id);
 		}
 	}
 }

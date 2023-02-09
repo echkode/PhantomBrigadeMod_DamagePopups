@@ -21,7 +21,8 @@ namespace EchKode.PBMods.DamagePopups
 			internal const float SpriteHeight = 24f;
 			internal const float SlotHeight = SpriteHeight + 4f;
 			internal const float SlideAnimationTime = 0.150f;
-			internal const double SlideThreshold = 0.5;
+			internal const float SlideThreshold = 0.5f;
+			internal const float SamplingBase = 128f;
 		}
 
 		private static bool initialized;
@@ -42,6 +43,7 @@ namespace EchKode.PBMods.DamagePopups
 		internal static void ReleasePooledSegmentList(List<PBCIViewPopups.PopupNestedSegment> segments) =>
 			releasePooledSegmentList(segments);
 
+		internal static float UpdateInterval => PBCIViewCombatPopups.ins.intervalMinText;
 		internal static float PlaybackSpeed => PBCIViewCombatPopups.ins.playbackSpeed;
 		internal static int TextStartOffset => PBCIViewCombatPopups.ins.textStartOffset;
 
@@ -90,18 +92,25 @@ namespace EchKode.PBMods.DamagePopups
 		internal static void SetSpritePosition(int spriteID, Vector2 position) =>
 			PBCIViewCombatPopups.ins.spriteCollection.SetPosition(spriteID, position);
 
-		internal static (bool, Vector2) GetPosition(CombatEntity combatUnit)
-		{
-			var position = combatUnit.position.v + combatUnit.localCenterPoint.v * 2;
-			var direction = Utilities.GetDirection(worldCamera.transform.position, position);
-			if (Vector3.Dot(worldCamera.transform.forward, direction) <= 0.1f)
-			{
-				return (false, position);
-			}
+		internal static HashSet<string> AnimationKeys = new HashSet<string>(PBCIViewCombatPopups.damageTypeKeys);
 
+		internal static (bool, Vector2) GetUIPosition(CombatEntity combatUnit)
+		{
+			var position = UnitHelper.GetPopupPosition(combatUnit);
+			return GetUIPosition(position);
+		}
+
+		internal static (bool, Vector2) GetUIPosition(Vector3 position)
+		{
+			var direction = Utilities.GetDirection(worldCamera.transform.position, position);
 			var worldPoint = uiCamera.ViewportToWorldPoint(worldCamera.WorldToViewportPoint(position));
 			var localPosition = transform.InverseTransformPoint(worldPoint);
-			return (true, new Vector2(localPosition.x, localPosition.y));
+			var flatPosition = new Vector2(localPosition.x, localPosition.y);
+			if (Vector3.Dot(worldCamera.transform.forward, direction) <= 0.1f)
+			{
+				return (false, flatPosition);
+			}
+			return (true, flatPosition);
 		}
 
 		internal static void AnimateSegment(
@@ -188,19 +197,26 @@ namespace EchKode.PBMods.DamagePopups
 				{
 					continue;
 				}
-				if (kvp.Value.timeTotal < 2f)
+				kvp.Value.segments[0].size = new Vector2(Constants.SpriteHeight, Constants.SpriteHeight);
+				if (kvp.Value.timeTotal < ModLink.Settings.popupDisplayTime)
 				{
 					continue;
 				}
-				kvp.Value.timeTotal = 2f;
+				kvp.Value.timeTotal = ModLink.Settings.popupDisplayTime;
 			}
+
+			PBCIViewCombatPopups.ins.intervalMinText = ModLink.Settings.textUpdateDelay / Constants.SamplingBase;
 
 			initialized = true;
 
-			Debug.LogFormat(
-				"Mod {0} ({1}) CIViewCombatPopups.InitializeInstance -- patched in instance fields/methods with reflection",
-				ModLink.modIndex,
-				ModLink.modId);
+			if (ModLink.Settings.logging != ModLink.ModSettings.LoggingFlag.None)
+			{
+				Debug.LogFormat(
+					"Mod {0} ({1}) CIViewCombatPopups.InitializeInstance -- patched in instance fields/methods with reflection\n  intervalTextMin: {2}",
+					ModLink.modIndex,
+					ModLink.modId,
+					PBCIViewCombatPopups.ins.intervalMinText);
+			}
 
 			return true;
 		}

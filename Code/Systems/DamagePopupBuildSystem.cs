@@ -4,7 +4,6 @@ using Entitas;
 
 using PhantomBrigade;
 using PBCIViewPopups = CIViewPopups;
-using PBCIViewCombatPopups = CIViewCombatPopups;
 
 using UnityEngine;
 
@@ -21,7 +20,7 @@ namespace EchKode.PBMods.DamagePopups
 
 		public void Initialize()
 		{
-			logEnabled = ModLink.Settings.enableLogging;
+			logEnabled = ModLink.Settings.IsLoggingEnabled(ModLink.ModSettings.LoggingFlag.Build);
 			atlas = CIViewCombatPopups.SpriteAtlas;
 			initialized = atlas != null;
 		}
@@ -48,7 +47,7 @@ namespace EchKode.PBMods.DamagePopups
 				{
 					continue;
 				}
-				if (now - tracking.damageTracker.timeLast < PBCIViewCombatPopups.ins.intervalMinText)
+				if (now - tracking.damageTracker.timeLast < CIViewCombatPopups.UpdateInterval)
 				{
 					continue;
 				}
@@ -105,7 +104,8 @@ namespace EchKode.PBMods.DamagePopups
 			ekp.AddSlot(index);
 
 			var combatUnit = IDUtility.GetCombatEntity(tracking.combatUnitID.id);
-			ekp.AddPosition(combatUnit.position.v + combatUnit.localCenterPoint.v);
+			var position = UnitHelper.GetPopupPosition(combatUnit);
+			ekp.AddPosition(position);
 
 			var spriteIDNext = CIViewCombatPopups.SpriteIDNext;
 			var segments = CIViewCombatPopups.GetPooledSegmentList();
@@ -113,19 +113,25 @@ namespace EchKode.PBMods.DamagePopups
 			ekp.AddPopup(spriteIDNext, segments);
 			ekp.AddDisplayText(tracking.damageTracker.text, spriteIDNext, now);
 			spriteIDNext = AddDefinitionSegments(ekp, definition);
-			spriteIDNext = AddTextSegments(ekp, tracking.damageTracker.text, spriteIDNext);
+			spriteIDNext = AnimationHelper.AddTextSegments(
+				ekp.popup.popupID,
+				segments,
+				tracking.damageTracker.text,
+				spriteIDNext,
+				atlas);
 			CIViewCombatPopups.SpriteIDNext = spriteIDNext;
 
 			if (logEnabled)
 			{
 				Debug.LogFormat(
-					"Mod {0} ({1}) DamagePopupBuildSystem.CreatePopup | time: {2:F3} | popup: {3} | key: {4} | unit: C-{5} | text: {6} | segments: {7}",
+					"Mod {0} ({1}) DamagePopupBuildSystem.CreatePopup | time: {2:F3} | popup: {3} | key: {4} | unit: C-{5} | unit position: {6} | text: {7} | segments: {8}",
 					ModLink.modIndex,
 					ModLink.modId,
 					now,
 					ekp.popup.popupID,
 					tracking.animationKey.s,
 					tracking.combatUnitID.id,
+					ekp.position.v,
 					tracking.damageTracker.text,
 					ekp.popup.segments.Count);
 			}
@@ -170,7 +176,12 @@ namespace EchKode.PBMods.DamagePopups
 
 			var definition = CIViewCombatPopups.GetDefinition(tracking.animationKey.s);
 			spriteIDNext = AddDefinitionSegments(ekp, definition);
-			spriteIDNext = AddTextSegments(ekp, tracking.damageTracker.text, spriteIDNext);
+			spriteIDNext = AnimationHelper.AddTextSegments(
+				ekp.popup.popupID,
+				ekp.popup.segments,
+				tracking.damageTracker.text,
+				spriteIDNext,
+				atlas);
 			CIViewCombatPopups.SpriteIDNext = spriteIDNext;
 
 			if (logEnabled)
@@ -223,68 +234,6 @@ namespace EchKode.PBMods.DamagePopups
 					enabled: false);
 				ekp.popup.segments.Add(segment);
 				spriteIDNext += 1;
-			}
-
-			return spriteIDNext;
-		}
-
-		static int AddTextSegments(
-			ECS.EkPopupEntity ekp,
-			string text,
-			int spriteIDNext)
-		{
-			var textStartOffset = CIViewCombatPopups.TextStartOffset;
-			var pivot = new Vector2(0.5f, 0.5f);
-			var color = new Color(1f, 1f, 1f, 1f);
-
-			foreach (var key in text)
-			{
-				var center = 6;
-				var offset = 12;
-				var width = 24;
-				var spriteName = "s_text_24_" + key;
-
-				if (CIViewCombatPopups.TryGetCharacterSprite(key, out var characterSprite))
-				{
-					spriteName = characterSprite.sprite;
-					center = characterSprite.center;
-					offset = characterSprite.offset;
-					width = characterSprite.width;
-				}
-
-				if (atlas.GetSprite(spriteName) == null)
-				{
-					Debug.LogWarningFormat(
-						"Mod {0} ({1}) DamagePopupBuildSystem.AddTextSegments can't find sprite in atlas | popup: {2} | name: {3}",
-						ModLink.modIndex,
-						ModLink.modId,
-						ekp.popup.popupID,
-						spriteName);
-
-					spriteIDNext += 1;
-					continue;
-				}
-
-				var pos = new Vector2(textStartOffset + center, 0f);
-				CIViewCombatPopups.AllocateSprite(
-					spriteIDNext,
-					spriteName,
-					pos,
-					width,
-					CIViewCombatPopups.Constants.SpriteHeight,
-					(Color32)color,
-					pivot,
-					enabled: false);
-				ekp.popup.segments.Add(new PBCIViewPopups.PopupNestedSegment()
-				{
-					sprite = spriteName,
-					pivot = pivot,
-					position = pos,
-					size = new Vector2(width, CIViewCombatPopups.Constants.SpriteHeight),
-				});
-
-				spriteIDNext += 1;
-				textStartOffset += offset;
 			}
 
 			return spriteIDNext;

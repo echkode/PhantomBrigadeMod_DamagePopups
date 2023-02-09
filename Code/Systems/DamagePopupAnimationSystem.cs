@@ -21,7 +21,7 @@ namespace EchKode.PBMods.DamagePopups
 
 		public void Initialize()
 		{
-			logEnabled = ModLink.Settings.enableLogging;
+			logEnabled = ModLink.Settings.IsLoggingEnabled(ModLink.ModSettings.LoggingFlag.Animation);
 			playbackSpeed = CIViewCombatPopups.PlaybackSpeed;
 		}
 
@@ -86,7 +86,7 @@ namespace EchKode.PBMods.DamagePopups
 					continue;
 				}
 
-				var (positionOK, position) = AnimationHelper.GetPosition(ekp);
+				var (positionOK, position) = AnimationHelper.GetUIPosition(ekp);
 				if (!positionOK)
 				{
 					AnimationHelper.HidePopup(ekp);
@@ -99,15 +99,15 @@ namespace EchKode.PBMods.DamagePopups
 				if (logEnabled)
 				{
 					Debug.LogFormat(
-						"Mod {0} ({1}) DamagePopupAnimationSystem.AnimateText | time: {2:F3} | popup: {3} | key: {4} | start time: {5:F3} | slot: {6} | unit position: {7} | slot offset: {8} | interpolant: {9} | segment count: {10}",
+						"Mod {0} ({1}) DamagePopupAnimationSystem.AnimateText | time: {2:F3} | popup: {3} | key: {4} | start time: {5:F3} | unit position: {6} | slot: {7} | slot offset: {8} | interpolant: {9} | segment count: {10}",
 						ModLink.modIndex,
 						ModLink.modId,
 						now,
 						ekp.popup.popupID,
 						definition.key,
 						ekp.displayText.startTime,
-						ekp.slot.i,
 						position,
+						ekp.slot.i,
 						slotOffset,
 						interpolantShared,
 						ekp.popup.segments.Count);
@@ -241,6 +241,10 @@ namespace EchKode.PBMods.DamagePopups
 		{
 			foreach (var tracking in ECS.Contexts.sharedInstance.ekTracking.GetEntitiesWithCombatUnitID(ekp.combatUnitID.id))
 			{
+				if (!tracking.hasAnimationKey)
+				{
+					continue;
+				}
 				if (ekp.animationKey.s == tracking.animationKey.s)
 				{
 					tracking.ReplaceDamageTracker("0", 0f, tracking.damageTracker.timeLast);

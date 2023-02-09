@@ -38,6 +38,10 @@ namespace EchKode.PBMods.DamagePopups
 			}
 
 			SystemInstaller.InstallAll();
+			if (Settings.registerConsoleCommands)
+			{
+				Diagnostics.Console.RegisterCommands();
+			}
 		}
 	}
 }

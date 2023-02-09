@@ -23,23 +23,28 @@ namespace EchKode.PBMods.DamagePopups
 				return;
 			}
 
-			if (ModLink.Settings.enableLogging)
+			if (ModLink.Settings.IsLoggingEnabled(ModLink.ModSettings.LoggingFlag.Tracking))
 			{
 				Debug.LogFormat(
-					"Mod {0} ({1}) CIViewCombatPopups.AddDamageText | time: {2:F3} | unit: C-{3} | type: {4} | value: {5} | position: {6}",
+					"Mod {0} ({1}) CIViewCombatPopups.AddDamageText | time: {2:F3} | unit: C-{3} | position: {4} | type: {5} | value: {6}",
 					ModLink.modIndex,
 					ModLink.modId,
 					Contexts.sharedInstance.combat.simulationTime.f,
 					unitCombat.id.id,
+					UnitHelper.GetPosition(unitCombat),
 					animKey,
-					value,
-					unitCombat.position.v + unitCombat.localCenterPoint.v);
+					value);
 			}
 
 			var ekc = ECS.Contexts.sharedInstance.ekRequest.CreateEntity();
 			ekc.AddCombatUnitID(unitCombat.id.id);
 			ekc.AddAnimationKey(animKey);
 			ekc.AddDamageText(value, format);
+
+			if (ModLink.Settings.replayPopups != ModLink.ModSettings.ReplayPopup.None)
+			{
+				ReplayHelper.AddSummaryFormats(animKey, format);
+			}
 		}
 	}
 }

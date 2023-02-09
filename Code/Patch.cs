@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 
 using PBCIViewCombatPopups = CIViewCombatPopups;
+using PBCombatReplayHelper = CombatReplayHelper;
 
 namespace EchKode.PBMods.DamagePopups
 {
@@ -21,6 +22,26 @@ namespace EchKode.PBMods.DamagePopups
 				value,
 				format);
 			return false;
+		}
+
+		[HarmonyPatch(typeof(PBCombatReplayHelper), "SetReplayActive")]
+		[HarmonyPostfix]
+		static void Crh_SetReplayActivePostfix(bool active)
+		{
+			if (ModLink.Settings.replayPopups != ModLink.ModSettings.ReplayPopup.None)
+			{
+				CombatReplayHelper.SetReplayActive(active);
+			}
+		}
+
+		[HarmonyPatch(typeof(PBCombatReplayHelper), "ApplyTime")]
+		[HarmonyPostfix]
+		static void Crh_ApplyTimePostfix(float timeRequestedLocal, bool timeCheck, bool blockAssetReuse)
+		{
+			if (ModLink.Settings.replayPopups != ModLink.ModSettings.ReplayPopup.None)
+			{
+				CombatReplayHelper.ApplyTime(timeRequestedLocal, timeCheck);
+			}
 		}
 
 		[HarmonyPatch(typeof(PhantomBrigade.Heartbeat), "Start")]

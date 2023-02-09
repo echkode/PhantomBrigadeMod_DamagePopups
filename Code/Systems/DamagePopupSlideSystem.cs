@@ -18,7 +18,7 @@ namespace EchKode.PBMods.DamagePopups
 
 		public void Initialize()
 		{
-			logEnabled = ModLink.Settings.enableLogging;
+			logEnabled = ModLink.Settings.IsLoggingEnabled(ModLink.ModSettings.LoggingFlag.Animation);
 			playbackSpeed = CIViewCombatPopups.PlaybackSpeed;
 		}
 
@@ -82,7 +82,7 @@ namespace EchKode.PBMods.DamagePopups
 					continue;
 				}
 
-				var (positionOK, position) = AnimationHelper.GetPosition(ekp);
+				var (positionOK, position) = AnimationHelper.GetUIPosition(ekp);
 				if (!positionOK)
 				{
 					AnimationHelper.HidePopup(ekp);
@@ -107,12 +107,14 @@ namespace EchKode.PBMods.DamagePopups
 			float interpolantShared,
 			float now)
 		{
+			var (_, positionFrom) = CIViewCombatPopups.GetUIPosition(ekp.position.v);
+			positionFrom += Vector2.up * (ekp.slot.i * CIViewCombatPopups.Constants.SlotHeight);
 			var positionTo = position + ekp.slideAnimation.slideToOffset;
 			if (definition.positionRounded)
 			{
 				positionTo = new Vector2(Mathf.RoundToInt(positionTo.x), Mathf.RoundToInt(positionTo.y));
 			}
-			ekp.ReplaceSlidePosition(Vector2.Lerp(ekp.position.v, positionTo, interpolantShared));
+			ekp.ReplaceSlidePosition(Vector2.Lerp(positionFrom, positionTo, interpolantShared));
 
 			if (logEnabled)
 			{
@@ -124,7 +126,7 @@ namespace EchKode.PBMods.DamagePopups
 					ekp.popup.popupID,
 					ekp.animationKey.s,
 					ekp.slideAnimation.startTime,
-					ekp.position.v,
+					positionFrom,
 					ekp.slideAnimation.slot,
 					ekp.slidePosition.v,
 					interpolantShared,

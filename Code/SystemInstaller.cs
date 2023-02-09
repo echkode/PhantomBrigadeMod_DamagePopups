@@ -26,7 +26,7 @@ namespace EchKode.PBMods.DamagePopups
 		internal static void InstallAtEnd(Systems feature, ISystem installee)
 		{
 			feature.Add(installee);
-			if (ModLink.Settings.enableLogging)
+			if (ModLink.Settings.IsLoggingEnabled(ModLink.ModSettings.LoggingFlag.System))
 			{
 				Debug.LogFormat(
 					"Mod {0} ({1}) installed system {2}",
@@ -134,7 +134,7 @@ namespace EchKode.PBMods.DamagePopups
 				}
 			}
 
-			if (ModLink.Settings.enableLogging)
+			if (ModLink.Settings.IsLoggingEnabled(ModLink.ModSettings.LoggingFlag.System))
 			{
 				var fmt = insert
 					? "Mod {0} ({1}) InstallBefore inserted system {2} ({3}) before {4}"
