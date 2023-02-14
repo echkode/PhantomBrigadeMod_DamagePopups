@@ -1,0 +1,12 @@
+id: com.echkode.pbmods.damagepopups
+ver: 1
+includesConfigOverrides: false
+includesConfigEdits: false
+includesLibraries: true
+includesTextures: false
+includesLocalizationEdits: false
+includesLocalizations: false
+gameVersionMin:
+gameVersionMax:
+name: Damage Popups
+desc: Changes how combat damage popups are displayed

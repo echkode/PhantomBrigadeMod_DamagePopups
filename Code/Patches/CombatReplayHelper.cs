@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) 2023 EchKode
+// SPDX-License-Identifier: BSD-3-Clause
+
+using UnityEngine;
 
 namespace EchKode.PBMods.DamagePopups
 {

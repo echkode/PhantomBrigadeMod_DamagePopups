@@ -1,0 +1,6 @@
+logging: All
+registerConsoleCommands: true
+replayPopups: Barrage, Cumulative
+samplesPerSecond: 20
+textUpdateDelay: 2
+popupDisplayTime: 1.75

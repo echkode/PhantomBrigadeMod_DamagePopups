@@ -1,4 +1,7 @@
-﻿namespace EchKode.PBMods.DamagePopups
+﻿// Copyright (c) 2023 EchKode
+// SPDX-License-Identifier: BSD-3-Clause
+
+namespace EchKode.PBMods.DamagePopups
 {
 	sealed class DamagePopupFeature : Feature
 	{
